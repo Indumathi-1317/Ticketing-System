@@ -28,7 +28,19 @@ export default function Login() {
     setLoading(true);
     setError('');
 
+    // Check if Firebase is using mock/invalid keys
+    const isMockConfig = auth.app.options.apiKey === 'mock_api_key';
+
     try {
+      if (isMockConfig) {
+        // Bypass for demo purposes if no API key is provided
+        console.warn('Firebase keys missing. Entering Demo Mode.');
+        setTimeout(() => {
+          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
+        }, 1000);
+        return;
+      }
+
       if (isLogin) {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
       } else {
@@ -41,7 +53,14 @@ export default function Login() {
       // Redirect based on role
       router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
     } catch (err: any) {
-      setError(err.message || 'An error occurred during authentication');
+      if (isMockConfig || err.message.includes('api-key-not-valid')) {
+        setError('Firebase API keys are missing. Redirecting you in Demo Mode so you can see the app features...');
+        setTimeout(() => {
+          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
+        }, 2000);
+      } else {
+        setError(err.message || 'An error occurred during authentication');
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -51,16 +70,36 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError('');
+    
+    // Check if Firebase is using mock/invalid keys
+    const isMockConfig = auth.app.options.apiKey === 'mock_api_key';
+
+    if (isMockConfig) {
+      setError('Google Sign-In requires valid Firebase API keys. Entering Demo Mode instead...');
+      setTimeout(() => {
+        router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
+      }, 1500);
+      return;
+    }
+
     try {
       await signInWithPopup(auth, googleProvider);
       router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
     } catch (err: any) {
-      setError(err.message || 'An error occurred during Google Sign-In');
+      if (err.message.includes('api-key-not-valid')) {
+        setError('Firebase API keys missing. Entering Demo Mode...');
+        setTimeout(() => {
+          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
+        }, 1500);
+      } else {
+        setError(err.message || 'An error occurred during Google Sign-In');
+      }
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
