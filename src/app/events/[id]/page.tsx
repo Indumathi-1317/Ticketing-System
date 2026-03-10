@@ -1,7 +1,6 @@
 import { MOCK_EVENTS } from '@/lib/mock';
 import Link from 'next/link';
-import { Calendar, MapPin, Clock, Share2, Heart, ShieldCheck, Ticket, Users, ArrowLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Calendar, MapPin, Clock, Users, Shield, Share2, Info } from 'lucide-react';
 
 export default async function EventDetails({ params }: { params: { id: string } }) {
   const resolvedParams = await params;
@@ -9,191 +8,177 @@ export default async function EventDetails({ params }: { params: { id: string } 
 
   if (!event) {
     return (
-      <div className="container min-h-[60vh] flex flex-col items-center justify-center text-center">
-        <h2 className="text-3xl font-bold mb-4">Event not found</h2>
-        <Link href="/events" className="btn btn-outline">
-           <ArrowLeft size={18} /> Back to Events
-        </Link>
+      <div className="container min-h-[60vh] flex flex-col items-center justify-center text-center space-y-4">
+        <h2 className="text-3xl font-bold">Event not found</h2>
+        <p className="text-muted">The event you are looking for might have been cancelled or moved.</p>
+        <Link href="/events" className="btn btn-outline">Back to Events</Link>
       </div>
     );
   }
 
-  const progress = (event.ticketsSold / event.capacity) * 100;
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="pb-24">
       {/* Hero Header */}
-      <div className="relative h-[50vh] w-full overflow-hidden">
-         <div 
-           className="absolute inset-0 bg-cover bg-center h-full w-full scale-105 blur-2xl opacity-50"
-           style={{ backgroundImage: event.imageUrl.startsWith('linear-gradient') ? event.imageUrl : `url(${event.imageUrl})` }}
-         />
-         <div className="container relative h-full flex items-end pb-12">
-            <div 
-              className="w-full h-full max-h-[400px] rounded-[32px] overflow-hidden shadow-2xl border border-white/10"
-              style={{ background: event.imageUrl.startsWith('linear-gradient') ? event.imageUrl : `url(${event.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            />
-         </div>
+      <div className="relative h-[400px] w-full mt-4">
+        <div className="container h-full relative z-10">
+          <div 
+            className="w-full h-full rounded-3xl bg-cover bg-center border border-border overflow-hidden shadow-2xl relative"
+            style={{ backgroundImage: `url(https://images.unsplash.com/photo-${1501281668930 + parseInt(event.id) * 1000})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+            <div className="absolute bottom-10 left-10 right-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-4 text-white">
+                <div className="flex items-center gap-2 bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 rounded-full w-fit">
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary">Featured Event</span>
+                </div>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight">{event.title}</h1>
+                <div className="flex flex-wrap items-center gap-6 text-white/80">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-primary" />
+                    <span className="font-medium">{event.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-primary" />
+                    <span className="font-medium">{event.location}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button className="btn btn-outline bg-white/5 border-white/20 text-white hover:bg-white/10">
+                  <Share2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="container py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
+      <div className="container mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Content */}
-          <div className="lg:col-span-8 space-y-12">
-             <div className="space-y-4">
-                <div className="flex flex-wrap items-center gap-3">
-                   <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-widest border border-primary/20">
-                      {event.organizer}
-                   </span>
-                   <span className="text-muted text-sm">•</span>
-                   <div className="flex items-center gap-1 text-muted text-sm font-medium">
-                      <Users size={14} />
-                      <span>{event.capacity} Capacity</span>
-                   </div>
-                </div>
-                <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-none">
-                   {event.title}
-                </h1>
-                <p className="text-xl text-muted leading-relaxed font-medium">
-                   Experience an unforgettable event that brings together the best of {event.title.toLowerCase()} in the heart of {event.location}.
+          <div className="lg:col-span-2 space-y-12">
+            <section className="space-y-6">
+              <div className="flex items-center gap-2 pb-2 border-b border-border">
+                <Info className="w-5 h-5 text-primary" />
+                <h2 className="text-2xl font-bold">About the Experience</h2>
+              </div>
+              <div className="prose prose-invert max-w-none text-muted leading-relaxed text-lg space-y-6">
+                <p>
+                  Experience the magic of {event.title}. {event.description}
                 </p>
-             </div>
+                <div className="bg-card p-6 rounded-2xl border border-border border-l-4 border-l-primary">
+                  <p className="italic text-foreground">
+                    "This isn't just an event; it's a curated journey through sound, light, and atmosphere. We've spent months perfecting every detail to ensure you have the night of your life."
+                  </p>
+                  <p className="mt-4 font-bold text-sm">— {event.organizer}</p>
+                </div>
+                <p>
+                  Our goal is to create spaces where people feel connected and inspired. From the moment you walk through the door, you’ll be transported into a world of curated experiences.
+                </p>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none p-0">
+                  {['Premium Audio Setup', 'Immersive Visuals', 'Safe & Inclusive Space', 'Exclusive Lounge Access'].map((item) => (
+                    <li key={item} className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-border">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-foreground text-sm font-medium">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
 
-             <div className="flex flex-wrap gap-8 items-center py-8 border-y border-border/50">
-                <div className="flex items-center gap-4">
-                   <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary">
-                      <Calendar size={24} />
-                   </div>
-                   <div>
-                      <p className="text-xs font-black uppercase text-muted tracking-widest">Date</p>
-                      <p className="font-bold">{event.date}</p>
-                   </div>
+            <section className="space-y-6">
+              <div className="flex items-center gap-2 pb-2 border-b border-border">
+                <MapPin className="w-5 h-5 text-primary" />
+                <h2 className="text-2xl font-bold">Location</h2>
+              </div>
+              <div className="w-full h-[300px] rounded-2xl bg-border/20 border border-border overflow-hidden relative group">
+                {/* Mock Map remains */}
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b')] bg-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-background/40 backdrop-blur-sm group-hover:bg-background/20 transition-all duration-500">
+                  <div className="p-4 bg-primary rounded-full shadow-2xl animate-bounce">
+                    <MapPin className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="mt-4 text-xl font-bold text-white tracking-tight">{event.location}</h3>
+                  <p className="text-white/80 mt-2 font-medium">Click to open in Google Maps</p>
                 </div>
-                <div className="flex items-center gap-4">
-                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                      <Clock size={24} />
-                   </div>
-                   <div>
-                      <p className="text-xs font-black uppercase text-muted tracking-widest">Time</p>
-                      <p className="font-bold">{event.time}</p>
-                   </div>
-                </div>
-                <div className="flex items-center gap-4">
-                   <div className="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center text-success">
-                      <MapPin size={24} />
-                   </div>
-                   <div>
-                      <p className="text-xs font-black uppercase text-muted tracking-widest">Venue</p>
-                      <p className="font-bold">{event.location}</p>
-                   </div>
-                </div>
-             </div>
-
-             {/* Rich Text Description */}
-             <div className="prose prose-invert max-w-none">
-                <h3 className="text-2xl font-black mb-6">About this experience</h3>
-                <div className="space-y-6 text-muted leading-loose text-lg">
-                   <p>{event.description}</p>
-                   <p>Join us at the premium venue in {event.location} for a night of {event.title}. This event features exclusive performances, high-end production, and a dedicated community of enthusiasts.</p>
-                   <ul className="space-y-4 list-none p-0">
-                      {[
-                        'Professional sound and lighting systems',
-                        'Expertly curated lineup of world-class performers',
-                        'Interactive digital experiences and immersive stages',
-                        'VIP access areas and complimentary beverage stations'
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start gap-3 bg-card/50 p-4 rounded-xl border border-border/50 transition-colors hover:border-primary/30">
-                           <div className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                              <ShieldCheck size={12} className="text-primary" />
-                           </div>
-                           <span className="font-medium text-foreground/80">{item}</span>
-                        </li>
-                      ))}
-                   </ul>
-                </div>
-             </div>
-
-             {/* Mock Map Integration */}
-             <div>
-                <h3 className="text-2xl font-black mb-6 italic">Location & Arrival</h3>
-                <div className="h-80 rounded-[32px] overflow-hidden bg-muted relative border border-border">
-                   <div className="absolute inset-0 bg-slate-800 opacity-80" />
-                   <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center space-y-4 max-w-xs p-6 bg-card/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
-                         <MapPin size={40} className="mx-auto text-secondary animate-bounce" />
-                         <p className="text-sm font-bold leading-tight">{event.location}</p>
-                         <button className="text-xs font-black uppercase tracking-widest text-primary hover:text-white transition-colors">
-                            Open in Google Maps
-                         </button>
-                      </div>
-                   </div>
-                </div>
-             </div>
+              </div>
+            </section>
           </div>
 
           {/* Sticky Sidebar */}
-          <div className="lg:col-span-4">
-             <div className="sticky top-28 space-y-6">
-                <div className="p-8 rounded-[32px] bg-card border-2 border-primary/20 shadow-[-20px_20px_60px_-15px_rgba(139,92,246,0.3)]">
-                   <div className="flex justify-between items-center mb-8">
-                      <span className="text-xs font-black uppercase tracking-[0.2em] text-muted italic">Ticket Price</span>
-                      <p className="text-4xl font-black text-white">
-                         {event.price === 0 ? 'FREE' : `$${event.price}`}
-                      </p>
-                   </div>
-
-                   <div className="space-y-3 mb-10">
-                      <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
-                         <span className={cn(progress > 80 ? "text-error" : "text-primary")}>
-                            {progress > 80 ? "Selling fast! 🔥" : "Available Tickets"}
-                         </span>
-                         <span className="text-white">{event.availableTickets} left</span>
-                      </div>
-                      <div className="h-2 w-full bg-border/50 rounded-full overflow-hidden">
-                         <div 
-                           className={cn(
-                             "h-full transition-all duration-1000",
-                             progress > 90 ? "bg-error" : progress > 70 ? "bg-secondary" : "bg-primary"
-                           )}
-                           style={{ width: `${progress}%` }}
-                         />
-                      </div>
-                   </div>
-
-                   <div className="space-y-4">
-                      <Link 
-                        href={`/checkout/${event.id}`} 
-                        className="w-full flex items-center justify-center gap-3 bg-primary hover:bg-primary-hover text-white py-5 rounded-2xl font-black text-xl transition-all shadow-xl shadow-primary/30 active:scale-95 group"
-                      >
-                         <Ticket className="transition-transform group-hover:rotate-12" />
-                         {event.price === 0 ? 'RESERVE NOW' : 'SECURE TICKETS'}
-                      </Link>
-                      <button className="w-full flex items-center justify-center gap-3 bg-muted/10 hover:bg-muted/20 text-foreground py-4 rounded-2xl font-bold transition-all border border-border">
-                         <Share2 size={18} /> share
-                      </button>
-                   </div>
-
-                   <p className="mt-8 text-[10px] text-center text-muted leading-relaxed font-bold uppercase tracking-widest">
-                      ✓ Instant QR ticket delivery<br />
-                      ✓ Secure encryption through Stripe<br />
-                      ✓ 24/7 guest support available
-                   </p>
+          <div className="lg:col-span-1">
+            <div className="sticky top-28 space-y-6">
+              <div className="card p-8 space-y-8 shadow-2xl border-primary/20 bg-gradient-to-br from-card to-background">
+                <div className="space-y-2">
+                  <span className="text-muted text-sm font-bold uppercase tracking-widest">Price per ticket</span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-foreground">
+                      {event.price === 0 ? 'FREE' : `$${event.price}`}
+                    </span>
+                    {event.price > 0 && <span className="text-muted font-medium">USD</span>}
+                  </div>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-secondary/5 border border-secondary/20">
-                   <h4 className="text-sm font-black uppercase text-secondary tracking-widest mb-3 flex items-center gap-2">
-                      <Heart size={14} fill="currentColor" /> Organizer Note
-                   </h4>
-                   <p className="text-xs text-muted leading-relaxed italic">
-                      "We can't wait to see you there! We've prepared something truly special for this session. Doors open exactly 45 minutes before start."
-                   </p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-muted">
+                      <Users className="w-4 h-4" />
+                      Availability
+                    </div>
+                    <span className="font-bold text-primary">{event.availableTickets} tickets left</span>
+                  </div>
+                  <div className="h-2 w-full bg-border rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary" 
+                      style={{ width: `${(event.availableTickets / 250) * 100}%` }}
+                    />
+                  </div>
                 </div>
-             </div>
+
+                <div className="space-y-4 pt-4">
+                  <Link 
+                    href={`/checkout/${event.id}`} 
+                    className="btn btn-primary w-full py-5 text-xl font-bold shadow-xl shadow-primary/20"
+                  >
+                    {event.price === 0 ? 'RSVP Now' : 'Buy Tickets'}
+                  </Link>
+                  <p className="text-[10px] text-center text-muted uppercase tracking-widest">
+                    No hidden fees • Secure Payment
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-border flex flex-col gap-4">
+                   <div className="flex items-start gap-3">
+                      <div className="p-2 bg-success/10 rounded-lg">
+                        <Shield className="w-4 h-4 text-success" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold">Verified Event</p>
+                        <p className="text-[11px] text-muted">Tickets are authentic and guaranteed.</p>
+                      </div>
+                   </div>
+                   <div className="flex items-start gap-3">
+                      <div className="p-2 bg-primary/10 rounded-lg">
+                        <Clock className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold">Fast Check-in</p>
+                        <p className="text-[11px] text-muted">Show your QR code on arrival.</p>
+                      </div>
+                   </div>
+                </div>
+              </div>
+
+               <div className="text-center">
+                  <button className="text-primary hover:text-primary-hover font-bold text-sm tracking-widest uppercase">
+                     Contact Organizer
+                  </button>
+               </div>
+            </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 }
+
