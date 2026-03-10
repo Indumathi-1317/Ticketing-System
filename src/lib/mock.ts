@@ -9,6 +9,8 @@ export type Event = {
   imageUrl: string;
   organizer: string;
   availableTickets: number;
+  capacity: number;
+  ticketsSold: number;
 };
 
 export const MOCK_EVENTS: Event[] = [
@@ -22,7 +24,9 @@ export const MOCK_EVENTS: Event[] = [
     description: 'An immersive auditory visual experience featuring top contemporary artists playing amidst a spectacular light show.',
     imageUrl: 'linear-gradient(45deg, #1e293b, #334155)',
     organizer: 'SF Arts collective',
-    availableTickets: 120,
+    availableTickets: 30,
+    capacity: 250,
+    ticketsSold: 220,
   },
   {
     id: '2',
@@ -35,6 +39,8 @@ export const MOCK_EVENTS: Event[] = [
     imageUrl: 'linear-gradient(45deg, #312e81, #4c1d95)',
     organizer: 'Tech Ventures Inc',
     availableTickets: 50,
+    capacity: 500,
+    ticketsSold: 450,
   },
   {
     id: '3',
@@ -46,7 +52,9 @@ export const MOCK_EVENTS: Event[] = [
     description: 'Explore the culinary delights of the world in this massive open-air food market that runs till dawn.',
     imageUrl: 'linear-gradient(45deg, #78350f, #991b1b)',
     organizer: 'ATX Foodies',
-    availableTickets: 500,
+    availableTickets: 120,
+    capacity: 1000,
+    ticketsSold: 880,
   },
   {
     id: '4',
@@ -58,7 +66,9 @@ export const MOCK_EVENTS: Event[] = [
     description: 'Join local developers discussing the latest in web3, smart contracts, and decentralized architectures.',
     imageUrl: 'linear-gradient(45deg, #14532d, #166534)',
     organizer: 'Web3 Miami',
-    availableTickets: 25,
+    availableTickets: 5,
+    capacity: 50,
+    ticketsSold: 45,
   },
   {
     id: '5',
@@ -70,6 +80,9 @@ export const MOCK_EVENTS: Event[] = [
     description: 'Play exclusive demos, meet indie developers, and celebrate the world of independent game development.',
     imageUrl: 'linear-gradient(45deg, #831843, #9d174d)',
     organizer: 'IGDA Chicago',
-    availableTickets: 200,
+    availableTickets: 75,
+    capacity: 300,
+    ticketsSold: 225,
   }
 ];
+

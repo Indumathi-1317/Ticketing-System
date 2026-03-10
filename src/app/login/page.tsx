@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { auth, googleProvider } from '@/lib/firebase';
+import { auth, googleProvider, isConfigured } from '@/lib/firebase';
 import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export default function Login() {
@@ -28,39 +28,29 @@ export default function Login() {
     setLoading(true);
     setError('');
 
-    // Check if Firebase is using mock/invalid keys
-    const isMockConfig = auth.app.options.apiKey === 'mock_api_key';
+    if (!isConfigured) {
+      // DEMO MODE fallback
+      setTimeout(() => {
+        setLoading(false);
+        router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
+      }, 1000);
+      return;
+    }
 
     try {
-      if (isMockConfig) {
-        // Bypass for demo purposes if no API key is provided
-        console.warn('Firebase keys missing. Entering Demo Mode.');
-        setTimeout(() => {
-          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
-        }, 1000);
-        return;
-      }
-
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      } else {
-        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-        if (formData.name) {
-          await updateProfile(userCredential.user, { displayName: formData.name });
+      if (auth) {
+        if (isLogin) {
+          await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        } else {
+          const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+          if (formData.name) {
+            await updateProfile(userCredential.user, { displayName: formData.name });
+          }
         }
+        router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
       }
-      
-      // Redirect based on role
-      router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
     } catch (err: any) {
-      if (isMockConfig || err.message.includes('api-key-not-valid')) {
-        setError('Firebase API keys are missing. Redirecting you in Demo Mode so you can see the app features...');
-        setTimeout(() => {
-          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
-        }, 2000);
-      } else {
-        setError(err.message || 'An error occurred during authentication');
-      }
+      setError(err.message || 'An error occurred during authentication');
       console.error(err);
     } finally {
       setLoading(false);
@@ -70,40 +60,40 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError('');
-    
-    // Check if Firebase is using mock/invalid keys
-    const isMockConfig = auth.app.options.apiKey === 'mock_api_key';
 
-    if (isMockConfig) {
-      setError('Google Sign-In requires valid Firebase API keys. Entering Demo Mode instead...');
+    if (!isConfigured) {
+      // DEMO MODE fallback
       setTimeout(() => {
+        setLoading(false);
         router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
-      }, 1500);
+      }, 1000);
       return;
     }
 
     try {
-      await signInWithPopup(auth, googleProvider);
-      router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
-    } catch (err: any) {
-      if (err.message.includes('api-key-not-valid')) {
-        setError('Firebase API keys missing. Entering Demo Mode...');
-        setTimeout(() => {
-          router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
-        }, 1500);
-      } else {
-        setError(err.message || 'An error occurred during Google Sign-In');
+      if (auth && googleProvider) {
+        await signInWithPopup(auth, googleProvider);
+        router.push(role === 'organizer' ? '/dashboard/organizer' : '/dashboard/attendee');
       }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during Google Sign-In');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
-    <div className="container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card" style={{ width: '100%', maxWidth: '400px', margin: '2rem 0' }}>
+    <div className="container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      
+      {!isConfigured && (
+        <div style={{ maxWidth: '400px', width: '100%', padding: '1rem', backgroundColor: 'rgba(234, 179, 8, 0.1)', border: '1px solid #eab308', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', color: '#eab308' }}>
+          <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>⚠️ Demo Mode Active</p>
+          <p style={{ fontSize: '0.8rem' }}>Firebase is not configured. Redirecting to mock dashboards automatically on sign-in.</p>
+        </div>
+      )}
+
+      <div className="card" style={{ width: '100%', maxWidth: '400px', margin: '1rem 0' }}>
         <h2 className="text-center" style={{ marginBottom: '0.5rem' }}>
           {isLogin ? 'Welcome Back' : 'Create an Account'}
         </h2>
@@ -191,4 +181,5 @@ export default function Login() {
     </div>
   );
 }
+
 
