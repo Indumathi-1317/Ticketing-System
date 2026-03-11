@@ -23,7 +23,7 @@ export default function CreateEvent() {
 
       <form onSubmit={handleCreate} className="card" style={{ padding: '2rem' }}>
         <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>Event Details</h3>
-        
+
         <div className="form-group">
           <label className="form-label" htmlFor="title">Event Title</label>
           <input type="text" id="title" className="form-input" required placeholder="Epic Summer Festival" />
@@ -64,14 +64,14 @@ export default function CreateEvent() {
         </div>
 
         <div className="form-group mb-8">
-           <label className="form-label" htmlFor="cover">Cover Image URL</label>
-           <input type="url" id="cover" className="form-input" placeholder="https://..." />
+          <label className="form-label" htmlFor="cover">Cover Image URL</label>
+          <input type="url" id="cover" className="form-input" placeholder="https://..." />
         </div>
 
         <div className="flex justify-between items-center" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '2rem' }}>
           <button type="button" onClick={() => router.back()} className="btn btn-outline">Cancel</button>
           <button type="submit" disabled={loading} className="btn btn-primary" style={{ padding: '0.75rem 2.5rem' }}>
-             {loading ? 'Publishing...' : 'Publish Event'}
+            {loading ? 'Publishing...' : 'Publish Event'}
           </button>
         </div>
       </form>

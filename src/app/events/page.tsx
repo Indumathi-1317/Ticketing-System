@@ -10,11 +10,11 @@ export default function EventsList() {
       </div>
 
       <div style={{ position: 'relative', marginBottom: '3rem' }}>
-        <input 
-          type="text" 
-          placeholder="Search for events, cities, or categories..." 
+        <input
+          type="text"
+          placeholder="Search for events, cities, or categories..."
           className="form-input"
-          style={{ paddingLeft: '3rem', fontSize: '1.125rem', height: '3.5rem' }} 
+          style={{ paddingLeft: '3rem', fontSize: '1.125rem', height: '3.5rem' }}
         />
         <Search style={{ position: 'absolute', left: '1rem', top: '1rem', color: 'var(--border-color)', width: '20px', height: '20px' }} />
       </div>
@@ -30,7 +30,7 @@ export default function EventsList() {
               </div>
               <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>{event.title}</h3>
               <p className="text-muted text-sm mb-4" style={{ flex: 1 }}>📍 {event.location}</p>
-              
+
               <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }} className="flex justify-between items-center">
                 <span style={{ fontWeight: 600, fontSize: '1.25rem', color: event.price === 0 ? 'var(--success)' : 'inherit' }}>
                   {event.price === 0 ? 'Free' : `$${event.price}`}
