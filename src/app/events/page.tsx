@@ -22,7 +22,7 @@ export default function EventsList() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
         {MOCK_EVENTS.map((event) => (
           <div key={event.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ height: '180px', background: event.imageUrl, borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
+            <div style={{ height: '180px', background: `${event.imageUrl} center/cover`, borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
               <div className="flex justify-between mb-2">
                 <span className="text-sm" style={{ color: 'var(--primary)', fontWeight: 600 }}>{event.date}</span>
@@ -33,7 +33,7 @@ export default function EventsList() {
 
               <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }} className="flex justify-between items-center">
                 <span style={{ fontWeight: 600, fontSize: '1.25rem', color: event.price === 0 ? 'var(--success)' : 'inherit' }}>
-                  {event.price === 0 ? 'Free' : `$${event.price}`}
+                  {event.price === 0 ? 'Free' : `₹${event.price}`}
                 </span>
                 <Link href={`/events/${event.id}`} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>
                   View Details

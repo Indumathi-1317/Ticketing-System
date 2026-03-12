@@ -6,7 +6,7 @@ export default function Home() {
       <section style={{ textAlign: 'center', marginBottom: '6rem' }}>
         <h1 style={{ fontSize: '4rem', lineHeight: '1.1', marginBottom: '1.5rem' }}>
           Discover the Most <br />
-          <span className="text-gradient">Exclusive Events</span> near you.
+          <span className="text-gradient">Bharat Events</span> near you.
         </h1>
         <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
           Your all-in-one platform for epic experiences. Book your tickets securely, track RSVPs, and manage your access with our digital QR ticketing.
@@ -33,31 +33,31 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
           {/* Mock Event 1 */}
           <div className="card">
-            <div style={{ height: '180px', background: 'linear-gradient(45deg, #1e293b, #334155)', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Neon Symphony 2026</h3>
-            <p className="text-muted text-sm mb-4">🎵 San Francisco, CA • Apr 15, 2026</p>
+            <div style={{ height: '180px', background: 'url("/indian_cultural_event_1773327220314.png") center/cover', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Vibrant Bollywood Night</h3>
+            <p className="text-muted text-sm mb-4">🎵 Mumbai, MH • Apr 15, 2026</p>
             <div className="flex justify-between items-center">
-              <span style={{ fontWeight: 600, fontSize: '1.5rem', color: 'var(--success)' }}>$45</span>
+              <span style={{ fontWeight: 600, fontSize: '1.5rem', color: 'var(--success)' }}>₹1,499</span>
               <Link href="/events/1" className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Get Tickets</Link>
             </div>
           </div>
 
           {/* Mock Event 2 */}
           <div className="card">
-            <div style={{ height: '180px', background: 'linear-gradient(45deg, #312e81, #4c1d95)', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Tech Innovation Summit</h3>
-            <p className="text-muted text-sm mb-4">💻 New York, NY • May 10, 2026</p>
+            <div style={{ height: '180px', background: 'url("/mumbai_tech_conference_1773327716138.png") center/cover', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>India Tech Summit</h3>
+            <p className="text-muted text-sm mb-4">💻 Bangalore, KA • May 10, 2026</p>
             <div className="flex justify-between items-center">
-              <span style={{ fontWeight: 600, fontSize: '1.5rem', color: 'var(--success)' }}>$299</span>
+              <span style={{ fontWeight: 600, fontSize: '1.5rem', color: 'var(--success)' }}>₹4,999</span>
               <Link href="/events/2" className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Get Tickets</Link>
             </div>
           </div>
 
           {/* Mock Event 3 */}
           <div className="card">
-            <div style={{ height: '180px', background: 'linear-gradient(45deg, #78350f, #991b1b)', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Midnight Food Festival</h3>
-            <p className="text-muted text-sm mb-4">🍔 Austin, TX • Jun 02, 2026</p>
+            <div style={{ height: '180px', background: 'url("/delhi_food_festival_1773327749790.png") center/cover', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}></div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Delhi Food Festival</h3>
+            <p className="text-muted text-sm mb-4">🍔 New Delhi, DL • Jun 02, 2026</p>
             <div className="flex justify-between items-center">
               <span style={{ fontWeight: 600, fontSize: '1.5rem', color: 'var(--success)' }}>Free</span>
               <Link href="/events/3" className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>RSVP Now</Link>
